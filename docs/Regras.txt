@@ -1,0 +1,58 @@
+
+1) REGRAS DE SINTAXE 
+ **NÃO INCLUA ASPAS TRIPLAS (```) OU QUALQUER OUTRO DELIMITADOR DE CÓDIGO NO Action Input para 'query_tool'.**
+ **EXEMPLO CERTO:** Action Input: SELECT MARCA, SUM(CPV_UND) FROM df_info_dataset GROUP BY MARCA
+ **EXEMPLO ERRADO:** Action Input: ```SELECT MARCA, SUM(CPV_UND) FROM df_info_dataset GROUP BY MARCA```
+                  
+ **Regras Específicas para Filtros de Data:**
+ * Ao filtrar por datas, **SEMPRE** utilize o formato `WHERE DATA >= 'YYYY-MM-DD' AND DATA <= 'YYYY-MM-DD'`.
+ * **NUNCA** utilize funções como `year(DATA) = YYYY` ou `month(DATA) = MM` ou qualquer outro método que não seja a comparação direta de datas no formato 'YYYY-MM-DD'.
+ * **EXEMPLO CERTO DE FILTRO DE DATA:** `WHERE DATA >='2025-05-01' AND DATA <= '2024-05-31'` 
+
+ * **EXEMPLO ERRADO DE FILTRO DE DATA:** `WHERE year(DATA) = 2024 AND month(DATA) = 5`
+
+
+2) REGRAS DE NEGOCIO
+**EXEMPLO_1 SOMA, o usuário pode pedir o valor total de uma marca então deve-se utilizar a ferramenta adequada para query, seguindo o exemplo da estrutura abaixo e alterando as variáveis conforme necessidade:
+select sum(CPV_UND) 
+from df_info_dataset
+where Marca = 'MOTORE (A4H)'
+
+**EXEMPLO_2 MÉDIA, o usuário pode pedir a média de  períodos então deve-se utilizar a ferramenta adequada para query, seguindo o exemplo da estrutura abaixo e alterando as variáveis conforme necessidade:
+select avg(CPV_UND) 
+from df_info_dataset
+where Data >= '2024-01-01' and Data <= '2024-12-31' and Marca = 'ALENIA (A4H)'
+
+
+**EXEMPLO_3 CONVERSÃO, o usuário pode pedir a conversão de algum produto, esta regra consiste na soma de CPV_UND dividido pela soma de MDTR_UND, deve-se seguir o exemplo da estrutura abaixo e alterando as variáveis conforme necessidade:
+select sum(CPV_UND) / sum(MDTR_UND)
+from df_info_dataset
+group by Marca
+
+**EXEMPLO_4 TOTAL DE MARCAS, o usuário pode pedir o total de marcas distintas de algum produto, esta regra consiste na contagem distinta das marcas , deve-se seguir o exemplo da estrutura abaixo e alterando as variáveis conforme necessidade:
+select count(distinct(Marca))
+from df_info_dataset
+group by Marca
+
+
+3) ESTRUTURA DO DATASET, TERMOS & SINÔNIMOS do dataset 'df_info_dataset':
+* 'DATA': Tipo data (yyyy-mm-dd).
+* 'MARCA': Tipo texto (ex: 'LUTEAL (A4H)').
+* 'APRESENTACAO': Tipo texto (ex: 'LUTEAL CAP MOLE BLX60').
+* 'EAN': Tipo texto/numérico (código, ex: '7896658040894').
+* 'MDTR_UND': Tipo numérico (Unidades de MDTR).
+* 'CPV_UND': Tipo numérico (Unidades de CPV).
+
+**Sinônimos e Definições Adicionais:**
+* Marca pode ser também 'Produto'.
+* Data pode ser também 'Período, Data ou Ocorrência'.
+* Apresentacao pode ser também 'SKU'.
+* EAN pode ser também 'Código'.
+* CPV_UND pode ser também 'UNIDADES CPV','CPV_UNIDADES','UND_CAMPANHA','UNIDADES CAMPANHA','UNIDADES VENDIDAS'.
+* MDTR_UND pode ser também 'UNIDADES MDTR', 'MDTR_UNIDADES', 'MDTR'.
+
+* Caso o usuário já traga o nome da Marca, não se esqueça de adicionar o sulfixo ' (A4H)' caso ele não tenha escrito.
+
+
+
+   
