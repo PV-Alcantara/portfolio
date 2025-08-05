@@ -4,7 +4,7 @@ from pyspark.sql import SparkSession
 from pyspark.sql.functions import col
 from import_sharepoint import Sharepoint
 
-campanha = Sharepoint('General/Arquivo_Databricks/Ache_Campanhas_Ativas.xlsx').read_file(engine = 'openpyxl').to_dataframe()
+campanha = Sharepoint('General/Arquivo_Databricks/Campanhas_Ativas.xlsx').read_file(engine = 'openpyxl').to_dataframe()
 
 logix = pd.DataFrame(data=campanha)
 
@@ -137,3 +137,4 @@ logix_final = spark.sql("""
 
 # Salvar a tabela final
 logix_final.write.mode("overwrite").saveAsTable("dmn_transformacao_digital_dev.db_analytics.CPV_fCampanhas")
+
