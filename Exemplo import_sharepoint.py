@@ -17,7 +17,7 @@ def get_secret(scope, key):
         raise ValueError(f"Erro ao buscar segredo: {e}. Verifique o escopo '{scope}' e a chave '{key}'.")
 
 # URLs de autenticação e mensagens
-URL_TOKEN = "https://login.microsoftonline.com/24090322-b104-494d-a1d3-662da14cddd4/oauth2/v2.0/token"
+URL_TOKEN = "https://login.microsoftonline.com/xxxxxx-xxxx-xxxx-xxxx-xxxxxxxx/oauth2/v2.0/token"
 URL_MSG = "https://graph.microsoft.com/v1.0/sites/"
 
 # Classe Sharepoint para extração de dados
@@ -30,7 +30,7 @@ class Sharepoint(ABC):
     def get_bearer_token(self):
         body = {
             "grant_type": "client_credentials",
-            "client_id": "01c78346-6928-48c4-8cd6-d0ef71ec7021",
+            "client_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxx",
             "client_secret": get_secret("keyvault", "key-trdg-client-secret"),
             "scope": "https://graph.microsoft.com/.default",
         }
@@ -56,3 +56,4 @@ class Sharepoint(ABC):
 
     def to_dataframe(self):
         return self.read_data
+
